@@ -33,22 +33,33 @@ Run them in order in Google Colab. Each notebook saves its outputs to `MyDrive/M
 | 04 | `04_llm_crossdomain_demo.ipynb` | LLM prompting, cross-domain test on M-ABSA, manager summary, Gradio demo | T4 GPU, ~25 min |
 
 To run: open a notebook in Colab, set **Runtime → Change runtime type → T4 GPU** for 03 and 04, then **Runtime → Run all**.
-Packages are listed in `requirements.txt` and installed in the first cell of each notebook.
+Colab already includes most packages, and the notebooks install the few that are missing; `requirements.txt` lists
+everything needed to run the project outside Colab.
 
-## Results (SemEval-2016 Arabic hotels test set, 2,604 opinions, mean of 3 seeds)
+The interactive demo is the last cell of notebook 04: it launches a Gradio page where you paste an Arabic review and see
+each aspect with its sentiment and confidence.
+
+## Results (SemEval-2016 Arabic hotels test set, 2,604 opinions; BERT models are the mean of 3 seeds)
 
 | Model | Accuracy | Macro-F1 | Neutral F1 |
 |---|---|---|---|
 | TF-IDF + logistic regression | 82.0 | 67.1 | 29.1 |
 | AraBERT v0.2 | 88.4 | 73.6 | 38.4 |
-| CAMeLBERT-MSA | 87.7 | 73.6 | 39.3 |
+| CAMeLBERT-MSA | 87.7 | 73.5 | 39.3 |
 | AraBERT v0.2, class-weighted (used in the demo) | 83.0 | 71.6 | 38.0 |
 
-Class weighting raises neutral recall from 32% to 60%, which is why the weighted model is used in the demo.
+The class-weighted AraBERT is used in the demo because it had the best macro-F1 on the validation set, which is where
+models were chosen. It also raises neutral recall from 32% to 60%, at a cost of about two macro-F1 points on the test set.
 
 On the same 300-row subset, the prompted LLM has the highest accuracy (87.3%) but the lowest macro-F1 (66.7% zero-shot,
 68.5% few-shot) and a neutral F1 of only 15.8%. On unseen M-ABSA reviews the fine-tuned model's macro-F1 drops by about
 10 points (hotel 58.1, restaurant 65.1, laptop 62.2).
+
+## Repository contents
+
+- `01`–`04` `.ipynb`: the four notebooks above, with their outputs
+- `requirements.txt`: Python packages
+- `README.md`: this file
 
 ## Data
 
